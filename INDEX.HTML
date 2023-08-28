@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Beleza</title>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      color: white;
+      margin-top: 50px;
+    }
+    input[type="file"] {
+      margin-top: 20px;
+    }
+    button {
+      margin-top: 10px;
+      background-color: #ff6600;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 24px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Calcular Beleza</h1>
+  <input type="file" id="uploadInput" accept="image/*">
+  <button id="calculateButton">Calcular</button>
+  <div id="result"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const uploadInput = document.getElementById('uploadInput');
+      const calculateButton = document.getElementById('calculateButton');
+      const resultDiv = document.getElementById('result');
+
+      calculateButton.addEventListener('click', () => {
+        const file = uploadInput.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            const img = new Image();
+            img.src = event.target.result;
+            img.onload = () => {
+              const aspectRatio = img.width / img.height;
+              const beautyScore = calculateBeautyScore(aspectRatio);
+              resultDiv.textContent = `Beleza: ${beautyScore.toFixed(2)}/10`;
+            };
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      function calculateBeautyScore(aspectRatio) {
+        // Fórmula simples de exemplo para calcular a pontuação de beleza usando a proporção áurea.
+        const beautyScore = 10 * (1 - Math.abs(aspectRatio - 1.618) / 1.618);
+        return beautyScore;
+      }
+    });
+  </script>
+</body>
+</html>
